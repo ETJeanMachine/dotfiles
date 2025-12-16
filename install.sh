@@ -18,6 +18,10 @@ fi
 mkdir -p ~/.config/fish
 cp -r "$DOTFILES_DIR/fish/." ~/.config/fish/
 
+# Install fnm (Fast Node Manager)
+echo "Installing fnm..."
+curl -fsSL https://fnm.vercel.app/install | bash
+
 # Install starship prompt
 echo "Installing starship..."
 curl -sS https://starship.rs/install.sh | sh
