@@ -11,3 +11,4 @@ end
 # fnm:env
 # go:path
 # cargo:path
+# bun:path

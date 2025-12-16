@@ -4,9 +4,10 @@
 complete -c fish_update -f
 
 # --add flag
-complete -c fish_update -l add -d "Add an optional addon to fish config" -xa "fnm go cargo"
+complete -c fish_update -l add -d "Add an optional addon to fish config" -xa "fnm go cargo bun"
 
 # Addon descriptions when --add is present
 complete -c fish_update -n "__fish_seen_argument -l add" -xa "fnm" -d "Fast Node Manager"
 complete -c fish_update -n "__fish_seen_argument -l add" -xa "go" -d "Go language bin path"
 complete -c fish_update -n "__fish_seen_argument -l add" -xa "cargo" -d "Rust/Cargo bin path"
+complete -c fish_update -n "__fish_seen_argument -l add" -xa "bun" -d "Bun JavaScript runtime"
