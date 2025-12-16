@@ -13,5 +13,5 @@ function fish_update --description "Update fish config from dotfiles repo"
     echo "Updating fish configuration..."
     cp -r $dotfiles_dir/fish/. ~/.config/fish/
 
-    echo "Done! Restart your shell or run 'source ~/.config/fish/config.fish' to apply changes."
+    echo "Done! Restart your shell or run 'fish_source' to apply changes."
 end
