@@ -18,7 +18,7 @@ function fish_update --description "Update fish config from dotfiles repo"
                     echo "Added fnm to PATH"
                 end
                 if not grep -q "^[^#]*fnm env" $config_file
-                    sed -i 's|# fnm:env|fnm env --use-on-cd --shell fish | source|' $config_file
+                    sed -i 's/# fnm:env/fnm env --use-on-cd --shell fish \| source/' $config_file
                     echo "Added fnm env initialization"
                 end
                 echo "fnm added! Run 'fish_source' to apply."
