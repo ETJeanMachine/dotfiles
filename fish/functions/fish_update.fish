@@ -8,7 +8,12 @@ function fish_update --description "Update fish config from dotfiles repo"
     end
 
     echo "Pulling latest changes..."
-    git -C $dotfiles_dir pull
+    set -l pull_output (git -C $dotfiles_dir pull 2>&1)
+    echo $pull_output
+
+    if string match -q "Already up to date*" $pull_output
+        return 0
+    end
 
     echo "Updating fish configuration..."
     cp -r $dotfiles_dir/fish/. ~/.config/fish/
