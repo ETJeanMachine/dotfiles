@@ -6,7 +6,7 @@ if status is-interactive
     starship init fish | source
 end
 
-# Optional addons (added via fish_update --add <addon>)
+# Optional addons (added via fish_add <addon>)
 # fnm:path
 # fnm:env
 # go:path
