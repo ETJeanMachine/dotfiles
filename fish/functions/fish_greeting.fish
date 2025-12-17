@@ -5,7 +5,7 @@ echo ""
 if command -v brew &>/dev/null
     # Homebrew (Darwin/Bazzite)
     set -l cache_file ~/.cache/brew_outdated_count
-    set -l cache_age 86400  # 1 day in seconds
+    set -l cache_age 21600  # 6 hours in seconds
 
     if not test -f $cache_file; or test (math (date +%s) - (stat -f %m $cache_file 2>/dev/null || stat -c %Y $cache_file)) -gt $cache_age
         set -l formulae (brew outdated | wc -l | string trim)
@@ -22,7 +22,7 @@ if command -v brew &>/dev/null
 else if command -v apt &>/dev/null
     # APT (Debian/Ubuntu)
     set -l cache_file ~/.cache/apt_upgradable_count
-    set -l cache_age 86400
+    set -l cache_age 21600  # 6 hours in seconds
     set -l apt_lists_dir /var/lib/apt/lists
 
     set -l lists_stale false
