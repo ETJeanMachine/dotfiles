@@ -2,7 +2,7 @@
 function fish_greeting
     set -l msg "Welcome back, Jean."
     set -l len (string length $msg)
-    set -l stars "·" "✧" "✦" "★" "✦" "✧"
+    set -l stars "·" "+" "✳" "✶" "✳" "+"
     set -l star_colors cyan brblue blue magenta brmagenta magenta blue brblue
     set -l star_count (count $stars)
     set -l color_count (count $star_colors)
@@ -51,7 +51,7 @@ function fish_greeting
         function __greeting_frame -a pos frame
             set -l msg "Welcome back, Jean."
             set -l len (string length $msg)
-            set -l stars "·" "✧" "✦" "★" "✦" "✧"
+            set -l stars "·" "+" "✳" "✶" "✳" "+"
             set -l star_colors cyan brblue blue magenta brmagenta magenta blue brblue
             set -l star_count (count $stars)
             set -l color_count (count $star_colors)
@@ -68,12 +68,12 @@ function fish_greeting
                     set output $output(set_color $taper_colors[$taper_idx])$char
                 end
             end
-            set -l star_idx (math -s0 "(floor(($frame - 1) / 6) % $star_count) + 1")
+            set -l star_idx (math -s0 "(floor(($frame - 1) / 3) % $star_count) + 1")
             printf "\r%s%s%s %s%s" (set_color blue) $stars[$star_idx] (set_color normal) "$output" (set_color normal)
         end
 
         # Print initial line for animation to update
-        printf "%s✦ %s%s\n" (set_color cyan) $msg (set_color normal)
+        printf "%s✶ %s%s\n" (set_color cyan) $msg (set_color normal)
 
         # Start refresh and animate while waiting
         set -l frame 0
@@ -115,7 +115,7 @@ function fish_greeting
                 set pos 1
             end
         end
-        printf "\e[A\r%s✦ %s%s\e[K\n" (set_color cyan) $msg (set_color normal)
+        printf "\e[A\r%s✶ %s%s\e[K\n" (set_color cyan) $msg (set_color normal)
 
         # Re-read cache and show status
         set -l data
@@ -137,9 +137,6 @@ function fish_greeting
         functions -e __greeting_frame
     else
         # Cache is fresh, just print static greeting
-        printf "%s✦ %s%s%s\n" (set_color blue) (set_color cyan) $msg (set_color normal)
+        printf "%s✶ %s%s%s\n" (set_color blue) (set_color cyan) $msg (set_color normal)
     end
-
-    # Blank line for spacing before prompt
-    echo ""
 end
