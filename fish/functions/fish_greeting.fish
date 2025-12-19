@@ -72,7 +72,8 @@ function fish_greeting
             printf "\r%s%s%s %s%s" (set_color blue) $stars[$star_idx] (set_color normal) "$output" (set_color normal)
         end
 
-        # Print initial line for animation to update
+        # Hide cursor and print initial line for animation to update
+        printf "\e[?25l"
         printf "%s✶ %s%s\n" (set_color cyan) $msg (set_color normal)
 
         # Start refresh and animate while waiting
@@ -115,6 +116,7 @@ function fish_greeting
                 set pos 1
             end
         end
+        printf "\e[?25h"
         printf "\e[A\r%s✶ %s%s\e[K\n" (set_color cyan) $msg (set_color normal)
 
         # Re-read cache and show status
