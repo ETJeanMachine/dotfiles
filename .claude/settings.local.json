@@ -1,7 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(fish -c fish_source && echo ''Config sourced''\")"
+      "Bash(fish -c \"source ~/.config/fish/config.fish && echo 'Config sourced'\")"
     ]
   }
 }
