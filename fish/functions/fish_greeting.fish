@@ -15,8 +15,10 @@ if command -v brew &>/dev/null
 
     if test -f $cache_file
         set -l data (cat $cache_file | string split ,)
-        set -l checked_time (date -r $data[1] 2>/dev/null || date -d @$data[1] "+%b %d, %H:%M")
-        echo (set_color yellow)$data[2](set_color normal)" formulae, "(set_color magenta)$data[3](set_color normal)" casks outdated "(set_color --dim)"(checked $checked_time)"(set_color normal)
+        if test "$data[2]" != "0" -o "$data[3]" != "0"
+            set -l checked_time (date -r $data[1] 2>/dev/null || date -d @$data[1] "+%b %d, %H:%M")
+            echo (set_color yellow)$data[2](set_color normal)" formulae, "(set_color magenta)$data[3](set_color normal)" casks outdated "(set_color --dim)"(checked $checked_time)"(set_color normal)
+        end
     end
 
 else if command -v apt &>/dev/null
@@ -49,8 +51,10 @@ else if command -v apt &>/dev/null
 
         if test -f $cache_file
             set -l data (cat $cache_file | string split ,)
-            set -l checked_time (date -d @$data[1] "+%b %d, %H:%M")
-            echo (set_color yellow)$data[2](set_color normal)" packages upgradable "(set_color --dim)"(checked $checked_time)"(set_color normal)
+            if test "$data[2]" != "0"
+                set -l checked_time (date -d @$data[1] "+%b %d, %H:%M")
+                echo (set_color yellow)$data[2](set_color normal)" packages upgradable "(set_color --dim)"(checked $checked_time)"(set_color normal)
+            end
         end
     end
 end

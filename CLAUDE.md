@@ -28,6 +28,9 @@ fish/
 ├── functions/
 │   ├── fish_update.fish     # Pulls repo and syncs config
 │   ├── fish_add.fish        # Addon installer dispatcher
+│   ├── fish_greeting.fish   # Shell greeting with cached package counts
+│   ├── brew.fish            # Homebrew wrapper (clears cache on upgrade)
+│   ├── apt.fish             # APT wrapper (clears cache on upgrade)
 │   └── addons/              # Modular addon installers
 │       ├── fnm.fish         # Fast Node Manager
 │       ├── go.fish          # Go bin path
@@ -35,6 +38,10 @@ fish/
 │       └── bun.fish         # Bun runtime
 └── completions/             # Tab completions for custom functions
 ```
+
+## Greeting Cache System
+
+`fish_greeting.fish` displays outdated package counts cached in `~/.cache/`. The `brew` and `apt` wrapper functions clear these caches after upgrade commands so the greeting reflects current state. Counts of zero are hidden.
 
 ## Addon System
 
