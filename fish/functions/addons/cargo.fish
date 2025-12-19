@@ -8,7 +8,9 @@ function __fish_addon_cargo
     end
 
     if not grep -q "^set -gx PATH.*cargo/bin" $config_file
-        sed -i 's|# cargo:path|set -gx PATH $HOME/.cargo/bin $PATH|' $config_file
+        set -l content (cat $config_file)
+        set content (string replace '# cargo:path' 'set -gx PATH $HOME/.cargo/bin $PATH' $content)
+        printf '%s\n' $content > $config_file
         echo "Added cargo/bin to PATH. Run 'fish_source' to apply."
     else
         echo "cargo is already configured"
