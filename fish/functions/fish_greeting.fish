@@ -31,6 +31,21 @@ function fish_greeting
         end
     end
 
+    # Lock file to prevent concurrent refreshes
+    set -l lock_file ~/.cache/pkg_refresh.lock
+
+    # Check for existing lock before starting refresh
+    if test $cache_stale = true; and test -f $lock_file
+        set -l lock_pid (cat $lock_file 2>/dev/null)
+        if test -n "$lock_pid"; and kill -0 $lock_pid 2>/dev/null
+            # Another refresh is in progress, show static greeting
+            set cache_stale false
+        else
+            # Stale lock from crashed process, remove it
+            rm -f $lock_file
+        end
+    end
+
     if test $cache_stale = true
         # Animation frame renderer
         function __greeting_frame -a pos frame
@@ -64,15 +79,19 @@ function fish_greeting
         set -l frame 0
         if test "$pkg_manager" = brew
             fish -c "
+                echo %self > $lock_file
                 brew update &>/dev/null
                 set formulae (brew outdated | wc -l | string trim)
                 set casks (brew outdated --cask 2>/dev/null | wc -l | string trim)
                 echo (date +%s),\$formulae,\$casks > $cache_file
+                rm -f $lock_file
             " &
         else if test "$pkg_manager" = apt
             fish -c "
+                echo %self > $lock_file
                 set upgradable (apt list --upgradable 2>/dev/null | tail -n +2 | wc -l | string trim)
                 echo (date +%s),\$upgradable > $cache_file
+                rm -f $lock_file
             " &
         end
         set -l refresh_pid $last_pid
