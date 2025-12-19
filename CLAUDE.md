@@ -48,15 +48,22 @@ fish/
 
 ## Greeting System
 
-`fish_greeting.fish` behavior depends on cache staleness (>6 hours):
+`fish_greeting.fish` displays an animated greeting followed by a quote of the day from computer scientists.
 
-**Cache fresh:** Static greeting with dark blue star, cyan text.
+**Greeting animation** depends on cache staleness (>6 hours):
 
-**Cache stale:** Animated greeting while refreshing brew/apt:
-- Scanning color wave sweeps back and forth (cyan → brblack taper)
-- Dark blue cycling star (`·` → `✧` → `✦` → `★`)
-- Shows "(refreshing brew/apt)" during refresh
-- After refresh, displays package status ("X formulae, Y casks outdated" or "Casks and formulae up to date")
+- **Cache fresh:** Static greeting with dark blue star, cyan text.
+- **Cache stale:** Animated greeting while refreshing brew/apt:
+  - Scanning color wave sweeps back and forth (cyan → brblack taper)
+  - Dark blue cycling star (`·` → `+` → `✳` → `✶`)
+  - Shows "(refreshing brew/apt)" during refresh
+  - After refresh, displays package status
+
+**Quote of the day:**
+- Quotes sourced from [skolakoda/programming-quotes](https://github.com/skolakoda/programming-quotes)
+- Downloaded during `install.sh` to `~/.config/fish/quotes.json`
+- Same quote shown throughout the day (based on day of year)
+- Requires `python3` for JSON parsing
 
 The `brew` and `apt` wrapper functions clear caches after upgrade commands.
 

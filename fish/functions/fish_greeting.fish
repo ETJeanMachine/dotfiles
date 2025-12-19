@@ -1,4 +1,4 @@
-# Animated greeting with scanning color wave and cycling star
+# Animated greeting with scanning color wave, cycling star, and quote of the day
 function fish_greeting
     set -l msg "Welcome back, Jean."
     set -l len (string length $msg)
@@ -141,4 +141,53 @@ function fish_greeting
         # Cache is fresh, just print static greeting
         printf "%s✶ %s%s%s\n" (set_color blue) (set_color cyan) $msg (set_color normal)
     end
+
+    # Display quote of the day
+    __show_quote_of_day
+end
+
+# Helper function to display quote of the day
+function __show_quote_of_day
+    set -l quotes_file ~/.config/fish/quotes.json
+
+    # Check if quotes file exists
+    if not test -f $quotes_file
+        return
+    end
+
+    # Get day of year as seed for consistent daily quote
+    set -l day_of_year (date +%j | string replace -r '^0+' '')
+    test -z "$day_of_year"; and set day_of_year 1
+
+    # Parse JSON and extract quote using python (widely available)
+    set -l result (python3 -c "
+import json
+import sys
+
+with open('$quotes_file', 'r') as f:
+    quotes = json.load(f)
+
+# Filter to only quotes with English text and author
+valid = [q for q in quotes if q.get('en') and q.get('author')]
+if not valid:
+    sys.exit(1)
+
+# Use day of year as index
+idx = ($day_of_year - 1) % len(valid)
+q = valid[idx]
+print(q['en'])
+print(q['author'])
+" 2>/dev/null)
+
+    if test $status -ne 0; or test -z "$result"
+        return
+    end
+
+    set -l quote_text $result[1]
+    set -l quote_author $result[2]
+
+    # Display the quote
+    echo
+    echo (set_color brblack)"\"$quote_text\""(set_color normal)
+    echo (set_color brblack)"  — $quote_author"(set_color normal)
 end

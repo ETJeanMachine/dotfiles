@@ -18,6 +18,10 @@ fi
 mkdir -p ~/.config/fish
 cp -r "$DOTFILES_DIR/fish/." ~/.config/fish/
 
+# Download programming quotes for greeting
+echo "Downloading programming quotes..."
+curl -sL "https://raw.githubusercontent.com/skolakoda/programming-quotes/master/src/data/quotes.json" -o ~/.config/fish/quotes.json
+
 # Install starship prompt
 echo "Installing starship..."
 curl -sS https://starship.rs/install.sh | sh
