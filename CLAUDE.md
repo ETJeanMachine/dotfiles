@@ -20,6 +20,13 @@ This clones the repo to `~/.local/share/dotfiles`, copies fish configs to `~/.co
 - `fish_add <addon>` - Install and configure optional tools (fnm, go, cargo, bun)
 - `fish_source` - Reload fish config without restarting shell
 
+## Testing Changes
+
+No build system. To test locally:
+1. Edit files in the repo
+2. Run `cp -r fish/. ~/.config/fish/` to copy to active config
+3. Run `fish_source` or restart fish to apply
+
 ## Architecture
 
 ```
@@ -39,14 +46,29 @@ fish/
 └── completions/             # Tab completions for custom functions
 ```
 
-## Greeting Cache System
+## Greeting System
 
-`fish_greeting.fish` displays outdated package counts cached in `~/.cache/`. The `brew` and `apt` wrapper functions clear these caches after upgrade commands so the greeting reflects current state. Counts of zero are hidden.
+`fish_greeting.fish` behavior depends on cache staleness (>6 hours):
+
+**Cache fresh:** Static greeting with dark blue star, cyan text.
+
+**Cache stale:** Animated greeting while refreshing brew/apt:
+- Scanning color wave sweeps back and forth (cyan → brblack taper)
+- Dark blue cycling star (`·` → `✧` → `✦` → `★`)
+- Shows "(refreshing brew/apt)" during refresh
+- After refresh, displays package status ("X formulae, Y casks outdated" or "Casks and formulae up to date")
+
+The `brew` and `apt` wrapper functions clear caches after upgrade commands.
 
 ## Addon System
 
 Addons work by replacing placeholder comments in `config.fish` (e.g., `# fnm:path`) with actual configuration lines using `sed`. Each addon file defines a `__fish_addon_<name>` function that:
 1. Installs the tool if not present (via curl)
 2. Modifies `config.fish` to add PATH and initialization
+
+To add a new addon:
+1. Add placeholder comment(s) to `config.fish` (e.g., `# newtool:path`)
+2. Create `functions/addons/newtool.fish` with a `__fish_addon_newtool` function
+3. Update the list in `functions/fish_add.fish` and `completions/fish_add.fish`
 
 The repo is stored at `~/.local/share/dotfiles` after install for `fish_update` to pull from.
