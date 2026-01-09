@@ -2,7 +2,7 @@
 function fish_greeting
     set -l msg "Welcome back, Jean."
     set -l len (string length $msg)
-    set -l stars "·" "+" "✳" "✶" "✳" "+"
+    set -l stars "·" "+" "✶" "✱" "✶" "+"
     set -l star_colors cyan brblue blue magenta brmagenta magenta blue brblue
     set -l star_count (count $stars)
     set -l color_count (count $star_colors)
@@ -74,7 +74,7 @@ function fish_greeting
 
         # Hide cursor and print initial line for animation to update
         printf "\e[?25l"
-        printf "%s✶ %s%s\n" (set_color cyan) $msg (set_color normal)
+        printf "%s✦ %s%s\n" (set_color cyan) $msg (set_color normal)
 
         # Start refresh and animate while waiting
         set -l frame 0
@@ -143,6 +143,6 @@ function fish_greeting
         functions -e __greeting_frame
     else
         # Cache is fresh, just print static greeting
-        printf "%s✶ %s%s%s\n" (set_color blue) (set_color cyan) $msg (set_color normal)
+        printf "%s✦ %s%s%s\n" (set_color blue) (set_color cyan) $msg (set_color normal)
     end
 end
