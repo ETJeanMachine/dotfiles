@@ -10,7 +10,7 @@ function fish_greeting
 
     # Check cache staleness
     set -l now (date +%s)
-    set -l cache_age 21600 # 6 hours
+    set -l cache_age 604800 # 1 week
     set -l cache_stale false
     set -l cache_file ""
     set -l pkg_manager ""
