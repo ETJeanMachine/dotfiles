@@ -89,11 +89,11 @@ function fish_greeting
             " &
         else if test "$pkg_manager" = apt
             # Prompt for password:
-            echo "Updating packages; please enter your password:"
+            echo "Refreshing packages; please enter your password:"
             read password
             fish -c "
                 echo %self > $lock_file
-                echo $password | sudo apt update &>/dev/null
+                echo $password | sudo -S apt update &>/dev/null
                 set upgradable (apt list --upgradable 2>/dev/null | tail -n +2 | wc -l | string trim)
                 echo (date +%s),\$upgradable > $cache_file
                 rm -f $lock_file
@@ -121,7 +121,7 @@ function fish_greeting
             end
         end
         printf "\e[?25h"
-        printf "\e[A\r%s✶ %s%s\e[K\n" (set_color cyan) $msg (set_color normal)
+        printf "\e[A\r%s✦ %s%s\e[K\n" (set_color cyan) $msg (set_color normal)
 
         # Re-read cache and show status
         set -l data
