@@ -51,7 +51,7 @@ function fish_greeting
         function __greeting_frame -a pos frame
             set -l msg "Welcome back, Jean."
             set -l len (string length $msg)
-            set -l stars "·" "+" "✳" "✶" "✳" "+"
+            set -l stars "·" "+" "✶" "✱" "✶" "+"
             set -l star_colors cyan brblue blue magenta brmagenta magenta blue brblue
             set -l star_count (count $stars)
             set -l color_count (count $star_colors)
@@ -89,8 +89,9 @@ function fish_greeting
             " &
         else if test "$pkg_manager" = apt
             # Prompt for password:
-            echo "Refreshing packages; please enter your password:"
-            read password
+            set -l prompt "Refreshing packages; please enter your password: "
+            read -s -P $prompt password
+            clear
             fish -c "
                 echo %self > $lock_file
                 echo $password | sudo -S apt update &>/dev/null
