@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(fish -c \"source ~/.config/fish/config.fish && echo 'Config sourced'\")"
+      "Bash(fish -c \"source ~/.config/fish/config.fish && echo 'Config sourced'\")",
+      "WebSearch",
+      "WebFetch(domain:raw.githubusercontent.com)"
     ]
   }
 }
