@@ -90,6 +90,7 @@ function fish_greeting
         else if test "$pkg_manager" = apt
             fish -c "
                 echo %self > $lock_file
+                apt update &>/dev/null
                 set upgradable (apt list --upgradable 2>/dev/null | tail -n +2 | wc -l | string trim)
                 echo (date +%s),\$upgradable > $cache_file
                 rm -f $lock_file
