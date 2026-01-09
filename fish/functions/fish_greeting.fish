@@ -10,7 +10,7 @@ function fish_greeting
 
     # Check cache staleness
     set -l now (date +%s)
-    set -l cache_age 21600  # 6 hours
+    set -l cache_age 21600 # 6 hours
     set -l cache_stale false
     set -l cache_file ""
     set -l pkg_manager ""
@@ -25,7 +25,7 @@ function fish_greeting
 
     if test -n "$cache_file"
         set -l data
-        test -f $cache_file; and read -l line < $cache_file; and set data (string split , $line)
+        test -f $cache_file; and read -l line <$cache_file; and set data (string split , $line)
         if test -z "$data[1]"; or test (math $now - $data[1]) -gt $cache_age
             set cache_stale true
         end
@@ -121,15 +121,15 @@ function fish_greeting
 
         # Re-read cache and show status
         set -l data
-        read -l line < $cache_file; and set data (string split , $line)
+        read -l line <$cache_file; and set data (string split , $line)
         if test "$pkg_manager" = brew
-            if test -n "$data[2]" -a \( "$data[2]" != "0" -o "$data[3]" != "0" \)
+            if test -n "$data[2]" -a \( "$data[2]" != 0 -o "$data[3]" != 0 \)
                 echo (set_color yellow)$data[2](set_color normal)" formulae, "(set_color magenta)$data[3](set_color normal)" casks outdated"
             else if test -n "$data[2]"
                 echo (set_color green)"Casks and formulae up to date."(set_color normal)
             end
         else if test "$pkg_manager" = apt
-            if test -n "$data[2]" -a "$data[2]" != "0"
+            if test -n "$data[2]" -a "$data[2]" != 0
                 echo (set_color yellow)$data[2](set_color normal)" packages upgradable"
             else if test -n "$data[2]"
                 echo (set_color green)"Apt packages up to date."(set_color normal)
