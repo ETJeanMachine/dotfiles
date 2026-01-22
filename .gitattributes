@@ -1,1 +1,1 @@
-fish/config.fish filter=ignore-after-marker
+fish/config.fish filter=ignore-after-comment
