@@ -38,6 +38,8 @@ fish/
 │   ├── fish_greeting.fish   # Shell greeting with cached package counts
 │   ├── brew.fish            # Homebrew wrapper (clears cache on upgrade)
 │   ├── apt.fish             # APT wrapper (clears cache on upgrade)
+│   ├── hx.fish              # Helix wrapper (syncs theme with OS dark/light mode)
+│   ├── claude.fish          # Claude Code wrapper (syncs theme with OS dark/light mode)
 │   └── addons/              # Modular addon installers
 │       ├── fnm.fish         # Fast Node Manager
 │       ├── go.fish          # Go bin path
@@ -72,3 +74,27 @@ To add a new addon:
 3. Update the list in `functions/fish_add.fish` and `completions/fish_add.fish`
 
 The repo is stored at `~/.local/share/dotfiles` after install for `fish_update` to pull from.
+
+## Dynamic Theme Switching
+
+Wrapper functions automatically sync application themes with the OS dark/light mode setting (macOS and GNOME supported):
+
+- **`hx`** - Updates `~/.config/helix/config.toml` before launching Helix
+  - Dark: `tokyonight_storm`
+  - Light: `catppuccin_latte`
+
+- **`claude`** - Updates `~/.claude.json` before launching Claude Code (requires `jq`)
+  - Sets `theme` to `dark` or `light`
+
+Detection methods:
+- **macOS**: `defaults read -g AppleInterfaceStyle` (returns "Dark" in dark mode)
+- **GNOME**: `gsettings get org.gnome.desktop.interface color-scheme`
+
+## Git Filter for Controlled Blocks
+
+The install script configures a git filter `ignore-after-comment` that truncates files at `# END CONTROLLED BLOCK` when staging. This allows local modifications after that marker without them being tracked by git.
+
+To use on a file, add to `.gitattributes`:
+```
+fish/config.fish filter=ignore-after-comment
+```
