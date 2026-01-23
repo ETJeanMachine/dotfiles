@@ -1,7 +1,7 @@
 function hx_theme --description "Set Helix theme based on OS dark/light mode"
     set -l config_file ~/.config/helix/config.toml
-    set -l dark_theme "tokyo_night_storm"
-    set -l light_theme "catppuccin_latte"
+    set -l dark_theme tokyonight_storm
+    set -l light_theme catppuccin_latte
     set -l theme
 
     # Detect OS theme
@@ -40,18 +40,18 @@ function hx_theme --description "Set Helix theme based on OS dark/light mode"
         if grep -q '^theme\s*=' $config_file
             # Replace existing theme line
             set -l temp_file (mktemp)
-            sed "s/^theme\s*=.*/theme = \"$theme\"/" $config_file > $temp_file
+            sed "s/^theme\s*=.*/theme = \"$theme\"/" $config_file >$temp_file
             mv $temp_file $config_file
         else
             # Prepend theme line to existing config
             set -l temp_file (mktemp)
-            echo "theme = \"$theme\"" > $temp_file
-            cat $config_file >> $temp_file
+            echo "theme = \"$theme\"" >$temp_file
+            cat $config_file >>$temp_file
             mv $temp_file $config_file
         end
     else
         # Create new config with just the theme
-        echo "theme = \"$theme\"" > $config_file
+        echo "theme = \"$theme\"" >$config_file
     end
 
     echo "Helix theme set to: $theme"
