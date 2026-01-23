@@ -7,11 +7,11 @@ if status is-interactive
     starship init fish | source
 end
 
-set -gx COLORTERM truecolor
-
 # Optional addons (added via fish_add <addon>)
 # fnm:path
 # fnm:env
 # go:path
 # cargo:path
 # bun:path
+
+# END CONTROLLED BLOCK
