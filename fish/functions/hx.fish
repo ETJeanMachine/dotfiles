@@ -1,6 +1,6 @@
 function hx --description "Helix wrapper that syncs theme with OS dark/light mode" --wraps hx
     set -l config_file ~/.config/helix/config.toml
-    set -l dark_theme tokyonight_storm
+    set -l dark_theme catppuccin_mocha
     set -l light_theme catppuccin_latte
     set -l theme $dark_theme
 
@@ -30,9 +30,9 @@ function hx --description "Helix wrapper that syncs theme with OS dark/light mod
             # Prepend theme line
             set content "theme = \"$theme\"\n$content"
         end
-        printf '%s\n' $content > $config_file
+        printf '%s\n' $content >$config_file
     else
-        echo "theme = \"$theme\"" > $config_file
+        echo "theme = \"$theme\"" >$config_file
     end
 
     command hx $argv
