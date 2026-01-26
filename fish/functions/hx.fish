@@ -1,6 +1,6 @@
 function hx --description "Helix wrapper that syncs theme with OS dark/light mode" --wraps hx
     set -l config_file ~/.config/helix/config.toml
-    set -l dark_theme catppuccin_mocha
+    set -l dark_theme catppuccin_frappe
     set -l light_theme catppuccin_latte
     set -l theme $dark_theme
 
