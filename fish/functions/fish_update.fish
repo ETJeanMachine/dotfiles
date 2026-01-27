@@ -1,5 +1,6 @@
 function fish_update --description "Update fish config from dotfiles repo"
     set -l dotfiles_dir ~/.local/share/dotfiles
+    set -l control_str "# END CONTROLLED BLOCK"
 
     if not test -d $dotfiles_dir
         echo "Dotfiles repo not found at $dotfiles_dir"
@@ -16,7 +17,10 @@ function fish_update --description "Update fish config from dotfiles repo"
     end
 
     echo "Updating fish configuration..."
+    # Saving local configuration settings before we update.
+    set -l local_config (sed -n "/$control_str/,\${/$control_str/!p;}" ~/.config/fish/config.fish)
     cp -r $dotfiles_dir/fish/. ~/.config/fish/
+    sed -i "/$control_str/r /dev/stdin" ~/.config/fish/config.fish <<< "$local_config"
 
     echo "Done! Restart your shell or run 'fish_source' to apply changes."
 end
