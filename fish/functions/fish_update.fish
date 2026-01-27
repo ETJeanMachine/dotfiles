@@ -20,7 +20,7 @@ function fish_update --description "Update fish config from dotfiles repo"
     # Saving local configuration settings before we update.
     set -l local_config (sed -n "/$control_str/,\${/$control_str/!p;}" ~/.config/fish/config.fish)
     cp -r $dotfiles_dir/fish/. ~/.config/fish/
-    sed -i "/$control_str/r /dev/stdin" ~/.config/fish/config.fish <<< "$local_config"
+    printf '%s\n' $local_config | sed -i "/$control_str/r /dev/stdin" ~/.config/fish/config.fish
 
     echo "Done! Restart your shell or run 'fish_source' to apply changes."
 end
