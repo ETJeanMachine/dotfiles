@@ -14,10 +14,6 @@ else
     git clone "$REPO_URL" "$DOTFILES_DIR"
 fi
 
-# Configure git filter to ignore content after "# END CONTROLLED BLOCK"
-git -C "$DOTFILES_DIR" config filter.ignore-after-comment.clean 'sed "/# END CONTROLLED BLOCK/q"'
-git -C "$DOTFILES_DIR" config filter.ignore-after-comment.smudge cat
-
 # Copy fish configuration files (merges with existing, overwrites conflicts)
 mkdir -p ~/.config/fish
 cp -r "$DOTFILES_DIR/fish/." ~/.config/fish/
