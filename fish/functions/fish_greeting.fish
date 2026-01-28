@@ -44,32 +44,10 @@ function fish_greeting
         end
     end
 
+    set -l star_count (count $stars)
+    set -l taper_colors cyan brcyan brblue blue brblack
+
     if test $cache_stale = true
-        # Animation frame renderer
-        function __greeting_frame -a pos frame
-            set -l msg "Welcome back, Jean."
-            set -l len (string length $msg)
-            set -l stars "·" "+" "✶" "✱" "✶" "+"
-            set -l star_colors cyan brblue blue magenta brmagenta magenta blue brblue
-            set -l star_count (count $stars)
-            set -l color_count (count $star_colors)
-            set -l taper_colors cyan brcyan brblue blue brblack
-
-            set -l output ""
-            for i in (seq 1 $len)
-                set -l char (string sub -s $i -l 1 $msg)
-                set -l dist (math -s0 "abs($i - $pos)")
-                if test $dist -ge 4
-                    set output $output(set_color brblack)$char
-                else
-                    set -l taper_idx (math -s0 "$dist + 1")
-                    set output $output(set_color $taper_colors[$taper_idx])$char
-                end
-            end
-            set -l star_idx (math -s0 "(floor(($frame - 1) / 3) % $star_count) + 1")
-            printf "\r%s%s%s %s%s" (set_color blue) $stars[$star_idx] (set_color normal) "$output" (set_color normal)
-        end
-
         # Hide cursor and print initial line for animation to update
         printf "\e[?25l"
         printf "%s✦ %s%s\n" (set_color cyan) $msg (set_color normal)
@@ -91,8 +69,23 @@ function fish_greeting
         set -l dir 1
         while kill -0 $refresh_pid 2>/dev/null
             set frame (math "$frame + 1")
+
+            # Render animation frame
+            set -l output ""
+            for i in (seq 1 $len)
+                set -l char (string sub -s $i -l 1 $msg)
+                set -l dist (math -s0 "abs($i - $pos)")
+                if test $dist -ge 4
+                    set output $output(set_color brblack)$char
+                else
+                    set -l taper_idx (math -s0 "$dist + 1")
+                    set output $output(set_color $taper_colors[$taper_idx])$char
+                end
+            end
+            set -l star_idx (math -s0 "(floor(($frame - 1) / 3) % $star_count) + 1")
+
             printf "\e[A\r"
-            __greeting_frame $pos $frame
+            printf "\r%s%s%s %s%s" (set_color blue) $stars[$star_idx] (set_color normal) "$output" (set_color normal)
             printf " %s\e[K" (set_color --dim)"(refreshing brew)"(set_color normal)
             printf "\n"
             sleep 0.034
@@ -116,8 +109,6 @@ function fish_greeting
         else if test -n "$data[2]"
             echo (set_color green)"Casks and formulae up to date."(set_color normal)
         end
-
-        functions -e __greeting_frame
     else
         # Cache is fresh, just print static greeting
         printf "%s✦ %s%s%s\n" (set_color blue) (set_color cyan) $msg (set_color normal)
