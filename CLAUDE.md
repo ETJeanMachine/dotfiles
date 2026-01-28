@@ -37,7 +37,6 @@ fish/
 │   ├── fish_add.fish        # Addon installer dispatcher
 │   ├── fish_greeting.fish   # Shell greeting with cached package counts
 │   ├── brew.fish            # Homebrew wrapper (clears cache on upgrade)
-│   ├── apt.fish             # APT wrapper (clears cache on upgrade)
 │   ├── hx.fish              # Helix wrapper (syncs theme with OS dark/light mode)
 │   ├── claude.fish          # Claude Code wrapper (syncs theme with OS dark/light mode)
 │   └── addons/              # Modular addon installers
@@ -50,17 +49,17 @@ fish/
 
 ## Greeting System
 
-`fish_greeting.fish` behavior depends on cache staleness (>6 hours):
+`fish_greeting.fish` behavior depends on cache staleness (>1 week):
 
 **Cache fresh:** Static greeting with dark blue star, cyan text.
 
-**Cache stale:** Animated greeting while refreshing brew/apt:
+**Cache stale:** Animated greeting while refreshing brew:
 - Scanning color wave sweeps back and forth (cyan → brblack taper)
-- Dark blue cycling star (`·` → `✧` → `✦` → `★`)
-- Shows "(refreshing brew/apt)" during refresh
+- Dark blue cycling star (`·` → `+` → `✶` → `✱`)
+- Shows "(refreshing brew)" during refresh
 - After refresh, displays package status ("X formulae, Y casks outdated" or "Casks and formulae up to date")
 
-The `brew` and `apt` wrapper functions clear caches after upgrade commands.
+The `brew` wrapper function clears the cache after upgrade commands. A lockfile (`~/.cache/pkg_refresh.lock`) prevents concurrent cache writes between `fish_greeting` and `brew`.
 
 ## Addon System
 
