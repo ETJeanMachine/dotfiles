@@ -21,10 +21,12 @@ function fish_greeting
 
     if test -f "$cache_file"
         set -l data
-        test -f $cache_file; and read -l line <$cache_file; and set data (string split , $line)
+        read -l line <$cache_file; and set data (string split , $line)
         if test -z "$data[1]"; or test (math $now - $data[1]) -gt (math "$cache_age * 86400")
             set cache_stale true
         end
+    else
+        set cache_stale true
     end
 
     # Lock file to prevent concurrent refreshes
