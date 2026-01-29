@@ -70,6 +70,10 @@ Detection methods:
 - **macOS**: `defaults read -g AppleInterfaceStyle` (returns "Dark" in dark mode)
 - **GNOME**: `gsettings get org.gnome.desktop.interface color-scheme`
 
+## Portability
+
+These configs must work on both macOS and Linux. Avoid `sed -i` as its syntax is incompatible between BSD (macOS) and GNU (Linux). Prefer fish builtins like `string replace` with a temp file instead.
+
 ## Git Filter for Controlled Blocks
 
 The install script configures a git filter `ignore-after-comment` that truncates files at `# END CONTROLLED BLOCK` when staging. This allows local modifications after that marker without them being tracked by git.
