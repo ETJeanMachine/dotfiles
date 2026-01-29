@@ -79,7 +79,7 @@ The repo is stored at `~/.local/share/dotfiles` after install for `fish_update` 
 Wrapper functions automatically sync application themes with the OS dark/light mode setting (macOS and GNOME supported):
 
 - **`hx`** - Updates `~/.config/helix/config.toml` before launching Helix
-  - Dark: `tokyonight_storm`
+  - Dark: `catppuccin_mocha`
   - Light: `catppuccin_latte`
 
 - **`claude`** - Updates `~/.claude.json` before launching Claude Code (requires `jq`)
