@@ -57,7 +57,7 @@ function fish_greeting
         fish -c "
             echo %self > $lock_file
             brew update &>/dev/null
-            set formulae (brew outdated | wc -l | string trim)
+            set formulae (brew outdated --formula 2>/dev/null | wc -l | string trim)
             set casks (brew outdated --cask 2>/dev/null | wc -l | string trim)
             echo (date +%s),\$formulae,\$casks > $cache_file
             rm -f $lock_file

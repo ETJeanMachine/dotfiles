@@ -4,7 +4,7 @@ function brew --wraps=brew
 
     # Reset cache after upgrade (but don't interrupt weekly cache check).
     if test (count $argv) -ge 1
-        if contains -- $argv[1] upgrade; and test -f "$cache_file"
+        if test $argv[1] = upgrade; and test -f "$cache_file"
             # Don't write cache while fish_greeting is refreshing it.
             set -l lock_file ~/.cache/pkg_refresh.lock
             set -l lock_pid
@@ -17,8 +17,14 @@ function brew --wraps=brew
             read -l line <$cache_file
             if test -n "$line"
                 set -l data (string split , $line)
-                if test "$data[2]" -gt 0 2>/dev/null; or test "$data[3]" -gt 0 2>/dev/null
+                if test (count $argv) -eq 1
+                    # Bare upgrade: zero out counts
                     echo $data[1],0,0 > $cache_file
+                else
+                    # Targeted upgrade: re-count outdated packages
+                    set -l formulae (command brew outdated --formula 2>/dev/null | wc -l | string trim)
+                    set -l casks (command brew outdated --cask 2>/dev/null | wc -l | string trim)
+                    echo $data[1],$formulae,$casks > $cache_file
                 end
             end
         end

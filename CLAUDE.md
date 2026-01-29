@@ -39,6 +39,7 @@ fish/
 │   ├── brew.fish            # Homebrew wrapper (clears cache on upgrade)
 │   ├── hx.fish              # Helix wrapper (syncs theme with OS dark/light mode)
 │   ├── claude.fish          # Claude Code wrapper (syncs theme with OS dark/light mode)
+│   ├── __detect_os_theme.fish # Shared helper returning 'dark' or 'light'
 │   └── addons/              # Modular addon installers
 │       ├── fnm.fish         # Fast Node Manager
 │       ├── go.fish          # Go bin path
@@ -79,7 +80,7 @@ The repo is stored at `~/.local/share/dotfiles` after install for `fish_update` 
 Wrapper functions automatically sync application themes with the OS dark/light mode setting (macOS and GNOME supported):
 
 - **`hx`** - Updates `~/.config/helix/config.toml` before launching Helix
-  - Dark: `catppuccin_mocha`
+  - Dark: `catppuccin_frappe`
   - Light: `catppuccin_latte`
 
 - **`claude`** - Updates `~/.claude.json` before launching Claude Code (requires `jq`)
