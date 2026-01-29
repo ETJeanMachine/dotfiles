@@ -16,7 +16,7 @@ This clones the repo to `~/.local/share/dotfiles`, copies fish configs to `~/.co
 
 ## Key Commands
 
-- `fish_update` - Pull latest changes from repo and update local fish config
+- `fish_update` - Pull latest changes from repo and update local fish config (skips copy if only non-fish files changed)
 - `fish_add <addon>` - Install and configure optional tools (fnm, go, cargo, bun)
 - `fish_source` - Reload fish config without restarting shell
 
@@ -33,7 +33,7 @@ No build system. To test locally:
 fish/
 ├── config.fish              # Main config with placeholder comments for addons
 ├── functions/
-│   ├── fish_update.fish     # Pulls repo and syncs config
+│   ├── fish_update.fish     # Pulls repo and syncs config (only if fish/ changed)
 │   ├── fish_add.fish        # Addon installer dispatcher
 │   ├── fish_greeting.fish   # Shell greeting with cached package counts
 │   ├── brew.fish            # Homebrew wrapper (clears cache on upgrade)
