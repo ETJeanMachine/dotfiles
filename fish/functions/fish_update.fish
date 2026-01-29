@@ -9,10 +9,17 @@ function fish_update --description "Update fish config from dotfiles repo"
     end
 
     echo "Pulling latest changes..."
+    set -l old_head (git -C $dotfiles_dir rev-parse HEAD)
     set -l pull_output (git -C $dotfiles_dir pull 2>&1)
     echo $pull_output
 
     if string match -q "Already up to date*" $pull_output
+        return 0
+    end
+
+    set -l new_head (git -C $dotfiles_dir rev-parse HEAD)
+    if test -z "$(git -C $dotfiles_dir diff --name-only $old_head $new_head -- fish/)"
+        echo "No fish config changes. Skipping update."
         return 0
     end
 
