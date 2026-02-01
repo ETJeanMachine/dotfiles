@@ -37,6 +37,7 @@ fish/
 │   ├── brew.fish            # Homebrew wrapper (clears cache on upgrade)
 │   ├── hx.fish              # Helix wrapper (syncs theme with OS dark/light mode)
 │   ├── claude.fish          # Claude Code wrapper (syncs theme with OS dark/light mode)
+│   ├── btop.fish            # btop wrapper (syncs theme with OS dark/light mode)
 │   └── __detect_os_theme.fish # Shared helper returning 'dark' or 'light'
 └── completions/             # Tab completions for custom functions
 ```
@@ -65,6 +66,10 @@ Wrapper functions automatically sync application themes with the OS dark/light m
 
 - **`claude`** - Updates `~/.claude.json` before launching Claude Code (requires `jq`)
   - Sets `theme` to `dark` or `light`
+
+- **`btop`** - Updates `~/.config/btop/btop.conf` before launching btop
+  - Dark: `catppuccin_frappe`
+  - Light: `catppuccin_latte`
 
 Detection methods:
 - **macOS**: `defaults read -g AppleInterfaceStyle` (returns "Dark" in dark mode)
