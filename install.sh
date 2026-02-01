@@ -30,6 +30,10 @@ fi
 mkdir -p ~/.config/fish
 cp -r "$DOTFILES_DIR/fish/." ~/.config/fish/
 
+# Copy helix themes
+mkdir -p ~/.config/helix/themes
+cp -r "$DOTFILES_DIR/hx/themes/." ~/.config/helix/themes/
+
 # Configure starship with pure-preset
 echo "Configuring starship with pure-preset..."
 mkdir -p ~/.config
