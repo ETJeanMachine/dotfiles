@@ -40,10 +40,13 @@ fish/
 │   ├── hx.fish              # Helix wrapper (syncs theme with OS dark/light mode)
 │   ├── claude.fish          # Claude Code wrapper (syncs theme with OS dark/light mode)
 │   ├── btop.fish            # btop wrapper (syncs theme with OS dark/light mode)
+│   ├── zellij.fish          # Zellij wrapper (syncs theme with OS dark/light mode)
 │   └── __detect_os_theme.fish # Shared helper returning 'dark' or 'light'
 └── completions/             # Tab completions for custom functions
 helix/
 └── themes/                  # Custom Helix themes (catppuccin transparent variants)
+zellij/
+└── config.kdl               # Zellij terminal multiplexer configuration
 starship.toml                # Starship prompt config (copied to ~/.config/starship.toml)
 ```
 
@@ -75,6 +78,10 @@ Wrapper functions automatically sync application themes with the OS dark/light m
 - **`btop`** - Updates `~/.config/btop/btop.conf` before launching btop
   - Dark: `catppuccin_frappe`
   - Light: `catppuccin_latte`
+
+- **`zellij`** - Updates `~/.config/zellij/config.kdl` before launching Zellij
+  - Dark: `catppuccin-frappe`
+  - Light: `catppuccin-latte`
 
 Detection methods:
 - **macOS**: `defaults read -g AppleInterfaceStyle` (returns "Dark" in dark mode)
