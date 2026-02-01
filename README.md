@@ -4,4 +4,4 @@ This is a dotfile store for my systems; so that I can easily copy in configurati
 
 ## Installation Instructions
 
-Make sure Fish is installed; once it is, run `./install.sh` to copy the configuration files and install starship prompt.
+Run `./install.sh` to install necessary packages w/brew & copy configuration files into `.config/`.
