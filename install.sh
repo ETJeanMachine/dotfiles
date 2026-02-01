@@ -26,17 +26,16 @@ else
     git clone "$REPO_URL" "$DOTFILES_DIR"
 fi
 
-# Copy fish configuration files (merges with existing, overwrites conflicts)
-mkdir -p ~/.config/fish
-cp -r "$DOTFILES_DIR/fish/." ~/.config/fish/
+# Copy all config directories to ~/.config/
+for dir in "$DOTFILES_DIR"/*/; do
+    dirname=$(basename "$dir")
+    echo "Installing $dirname configuration..."
+    mkdir -p "$HOME/.config/$dirname"
+    cp -r "$dir." "$HOME/.config/$dirname/"
+done
 
-# Copy helix themes
-mkdir -p ~/.config/helix/themes
-cp -r "$DOTFILES_DIR/hx/themes/." ~/.config/helix/themes/
-
-# Configure starship with pure-preset
-echo "Configuring starship with pure-preset..."
-mkdir -p ~/.config
-starship preset pure-preset -o ~/.config/starship.toml
+# Copy standalone config files to ~/.config/
+echo "Installing starship configuration..."
+cp "$DOTFILES_DIR/starship.toml" "$HOME/.config/starship.toml"
 
 echo "Installation complete!"

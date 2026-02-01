@@ -19,31 +19,50 @@ function fish_update --description "Update fish config from dotfiles repo"
     end
 
     set -l new_head (git -C $dotfiles_dir rev-parse HEAD)
-    set -l fish_changed (git -C $dotfiles_dir diff --name-only $old_head $new_head -- fish/)
-    set -l hx_changed (git -C $dotfiles_dir diff --name-only $old_head $new_head -- hx/)
 
-    if test -z "$fish_changed" -a -z "$hx_changed"
+    # Find all config directories in the repo (top-level dirs, excluding hidden/meta)
+    set -l config_dirs
+    for dir in $dotfiles_dir/*/
+        set -l dirname (basename $dir)
+        set config_dirs $config_dirs $dirname
+    end
+
+    # Check which directories had changes
+    set -l changed_dirs
+    for dir in $config_dirs
+        set -l dir_changed (git -C $dotfiles_dir diff --name-only $old_head $new_head -- $dir/)
+        if test -n "$dir_changed"
+            set changed_dirs $changed_dirs $dir
+        end
+    end
+
+    # Check if standalone config files changed
+    set -l starship_changed (git -C $dotfiles_dir diff --name-only $old_head $new_head -- starship.toml)
+
+    if test (count $changed_dirs) -eq 0 -a -z "$starship_changed"
         echo "No relevant changes. Skipping update."
         return 0
     end
 
-    # Update fish config if fish/ changed
-    if test -n "$fish_changed"
-        echo "Updating fish configuration..."
-        # Saving local configuration settings before we update.
+    # Copy standalone config files if changed
+    if test -n "$starship_changed"
+        echo "Updating starship configuration..."
+        cp $dotfiles_dir/starship.toml ~/.config/starship.toml
+    end
+
+    for dir in $changed_dirs
+        echo "Updating $dir configuration..."
+        mkdir -p ~/.config/$dir
+        cp -r $dotfiles_dir/$dir/. ~/.config/$dir/
+    end
+
+    # Restore local config.fish content after the controlled block
+    if contains fish $changed_dirs
         set -l local_config (sed -n "/$control_str/,\${/$control_str/!p;}" $config_file)
-        cp -r $dotfiles_dir/fish/. ~/.config/fish/
         set -l local_block (printf '%s\n' $local_config)
         string replace "$control_str" "$control_str
 $local_block" <$config_file >$config_file.tmp
         mv $config_file.tmp $config_file
-    end
-
-    # Update helix themes if hx/ changed
-    if test -n "$hx_changed"
-        echo "Updating helix themes..."
-        mkdir -p ~/.config/helix/themes
-        cp -r $dotfiles_dir/hx/themes/. ~/.config/helix/themes/
     end
 
     echo "Done! Restart your shell or run 'fish_source' to apply changes."

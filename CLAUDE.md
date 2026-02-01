@@ -12,11 +12,11 @@ Personal dotfiles repository for fish shell configuration.
 ./install.sh
 ```
 
-This clones the repo to `~/.local/share/dotfiles`, copies fish configs to `~/.config/fish/`, installs starship prompt, and configures it with the pure-preset.
+This clones the repo to `~/.local/share/dotfiles`, installs brew packages, and copies all config directories to `~/.config/<dirname>/`.
 
 ## Key Commands
 
-- `fish_update` - Pull latest changes from repo and update local fish config (skips copy if only non-fish files changed)
+- `fish_update` - Pull latest changes from repo and copy changed config directories to `~/.config/`
 - `fish_source` - Reload fish config without restarting shell
 
 ## Testing Changes
@@ -28,11 +28,13 @@ No build system. To test locally:
 
 ## Architecture
 
+Each top-level directory maps to `~/.config/<dirname>/`. Both `install.sh` and `fish_update` use this convention.
+
 ```
 fish/
 ├── config.fish              # Main config
 ├── functions/
-│   ├── fish_update.fish     # Pulls repo and syncs config (only if fish/ changed)
+│   ├── fish_update.fish     # Pulls repo and syncs changed config dirs
 │   ├── fish_greeting.fish   # Shell greeting with cached package counts
 │   ├── brew.fish            # Homebrew wrapper (clears cache on upgrade)
 │   ├── hx.fish              # Helix wrapper (syncs theme with OS dark/light mode)
@@ -40,6 +42,9 @@ fish/
 │   ├── btop.fish            # btop wrapper (syncs theme with OS dark/light mode)
 │   └── __detect_os_theme.fish # Shared helper returning 'dark' or 'light'
 └── completions/             # Tab completions for custom functions
+helix/
+└── themes/                  # Custom Helix themes (catppuccin transparent variants)
+starship.toml                # Starship prompt config (copied to ~/.config/starship.toml)
 ```
 
 ## Greeting System
