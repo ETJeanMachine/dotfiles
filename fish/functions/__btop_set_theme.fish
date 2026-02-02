@@ -20,4 +20,7 @@ function __btop_set_theme --description "Set btop theme to match dark/light mode
     else
         echo "color_theme = \"$theme\"" >$config_file
     end
+
+    # Signal btop to reload config if it's running
+    pkill -USR2 btop 2>/dev/null
 end
