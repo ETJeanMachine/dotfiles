@@ -50,6 +50,16 @@ function fish_update --description "Update fish config from dotfiles repo"
         cp $dotfiles_dir/starship.toml ~/.config/starship.toml
     end
 
+    # Save local config.fish content after the controlled block before overwriting
+    set -l local_backup (mktemp)
+    set -l has_local_content 0
+    if contains fish $changed_dirs; and test -f $config_file
+        sed -n "/$control_str/,\${/$control_str/!p;}" $config_file >$local_backup
+        if test -s $local_backup
+            set has_local_content 1
+        end
+    end
+
     for dir in $changed_dirs
         echo "Updating $dir configuration..."
         mkdir -p ~/.config/$dir
@@ -57,13 +67,10 @@ function fish_update --description "Update fish config from dotfiles repo"
     end
 
     # Restore local config.fish content after the controlled block
-    if contains fish $changed_dirs
-        set -l local_config (sed -n "/$control_str/,\${/$control_str/!p;}" $config_file)
-        set -l local_block (printf '%s\n' $local_config)
-        string replace "$control_str" "$control_str
-$local_block" <$config_file >$config_file.tmp
-        mv $config_file.tmp $config_file
+    if test $has_local_content -eq 1
+        cat $local_backup >>$config_file
     end
+    rm -f $local_backup
 
     echo "Done! Restart your shell or run 'fish_source' to apply changes."
 end
